@@ -1,3 +1,3 @@
 FROM mariadb:latest
 CMD ["mysqld"]
-EXPOSE 3306
+EXPOSE ${DATABASE_EXPOSED_PORT}

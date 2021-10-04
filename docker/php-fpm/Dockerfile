@@ -1,18 +1,28 @@
 FROM php:7.4.19-fpm-alpine
 
-# PDO_MYSQL
-RUN apk --update --no-cache add git
+RUN apk add --no-cache \
+        acl \
+        fcgi \
+        file \
+        gettext \
+        git \
+        make \
+        bash \
+        nano \
+        zip \
+        openssh-client \
+        supervisor \
+        nginx \
+        freetype \
+        libpng \
+        libjpeg-turbo \
+        freetype-dev \
+        libpng-dev \
+        libjpeg-turbo-dev \
+        $PHPIZE_DEPS \
+    ;
 
-RUN set -eux; \
-	apk add --no-cache --virtual .build-deps \
-		$PHPIZE_DEPS \
-		icu-dev \
-		libzip-dev \
-		zlib-dev \
-		libxslt-dev \
-	; \
-	\
-    docker-php-ext-install pdo_mysql
+RUN pecl install xdebug
 
 RUN apk add --no-cache rabbitmq-c-dev && \
     mkdir -p /usr/src/php/ext/amqp && \
@@ -20,6 +30,7 @@ RUN apk add --no-cache rabbitmq-c-dev && \
     docker-php-ext-install amqp; \
     docker-php-ext-enable amqp
 
+RUN docker-php-ext-install pdo_mysql
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 EXPOSE ${PHP_FPM_EXPOSED_PORT}

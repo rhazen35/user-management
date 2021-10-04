@@ -2,7 +2,7 @@ version: '3'
 
 services:
   database:
-    container_name: ${PROJECT_NAME}-database
+    container_name: ${COMPOSE_PROJECT_NAME}-database
     build:
       context: ./database
     environment:
@@ -17,7 +17,7 @@ services:
       - ./database/data:/var/lib/mysql
 
   php-fpm:
-    container_name: ${PROJECT_NAME}-php-fpm
+    container_name: ${COMPOSE_PROJECT_NAME}-php-fpm
     build:
       context: ./php-fpm
     depends_on:
@@ -30,7 +30,7 @@ services:
       - ../:/var/www
 
   nginx:
-    container_name: ${PROJECT_NAME}-webserver
+    container_name: ${COMPOSE_PROJECT_NAME}-webserver
     build:
       context: ./nginx
     volumes:
@@ -42,4 +42,4 @@ services:
     depends_on:
       - php-fpm
     ports:
-      - "80:80"
+      - "${WEBSERVER_EXPOSED_PORT}:80"

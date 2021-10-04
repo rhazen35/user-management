@@ -3,17 +3,17 @@ framework:
         failure_transport: failed
 
         transports:
-            inbox:
+            subscribe:
                 serializer: app.serializer.messenger.external_json_serializer
                 dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
                 options:
                     exchange:
-                        name: inbox
+                        name: subscribe
                         type: direct
-                        default_publish_routing_key: inbox
+                        default_publish_routing_key: subscribe
                     queues:
                         messages:
-                            binding_keys: [ inbox ]
+                            binding_keys: [ subscribe ]
 
             failed:
                 dsn: "%env(MESSENGER_TRANSPORT_DSN_FAILED)%"
@@ -26,4 +26,4 @@ framework:
         default_bus: app.command_bus
 
         routing:
-            'App\Messenger\Contract\MessageInterface': inbox
+            'App\Messenger\Contract\MessageInterface': subscribe
