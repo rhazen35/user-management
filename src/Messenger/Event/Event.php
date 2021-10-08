@@ -1,20 +1,12 @@
 <?php
 
-/*************************************************************************
- *  Copyright notice
- *
- *  (c) 2021 Ruben Hazenbosch <rh@braune-digital.com>, Braune Digital GmbH
- *
- *  All rights reserved
- ************************************************************************/
-
 declare(strict_types=1);
 
-namespace App\Messenger\Event\User;
+namespace App\Messenger\Event;
 
 use App\Messenger\Contract\PublishMessageInterface;
 
-class InvalidCreateUserEvent implements PublishMessageInterface
+class Event implements PublishMessageInterface
 {
     private string $channel;
     private array $payload;
