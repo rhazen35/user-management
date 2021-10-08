@@ -25,13 +25,38 @@ class Factory
     {
         $user = $this->create();
 
-        $password = $this->passwordHasher->hashPassword($user, $data['password']);
+        $password = $this
+            ->passwordHasher
+            ->hashPassword(
+                $user,
+                $data['password']
+            );
 
         return $user
             ->setFirstName($data['firstName'])
             ->setLastName($data['lastName'])
             ->setUsername($data['username'])
             ->setEmail($data['email'])
+            ->setPassword($password)
+            ->eraseCredentials();
+    }
+
+    public function createFromData(CreateUserData $data): User
+    {
+        $user = $this->create();
+
+        $password = $this
+            ->passwordHasher
+            ->hashPassword(
+                $user,
+                $data->getPassword()
+            );
+
+        return $user
+            ->setFirstName($data->getFirstName())
+            ->setLastName($data->getLastName())
+            ->setUsername($data->getEmail())
+            ->setEmail($data->getEmail())
             ->setPassword($password)
             ->eraseCredentials();
     }

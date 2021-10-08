@@ -10,22 +10,22 @@
 
 declare(strict_types=1);
 
-namespace App\Messenger\External;
+namespace App\Messenger\Event\User;
 
-use App\Messenger\Contract\SubscribeMessageInterface;
+use App\Messenger\Contract\PublishMessageInterface;
 
-class ExternalMessage implements SubscribeMessageInterface
+class InvalidCreateUserEvent implements PublishMessageInterface
 {
     private string $channel;
-    private object $payload;
+    private array $payload;
     private string $messageId;
-    private ?string $originatedMessageId;
+    private string $originatedMessageId;
 
     public function __construct(
         string $channel,
-        object $payload,
+        array $payload,
         string $messageId,
-        ?string $originatedMessageId
+        string $originatedMessageId
     ) {
         $this->channel = $channel;
         $this->payload = $payload;
@@ -38,7 +38,7 @@ class ExternalMessage implements SubscribeMessageInterface
         return $this->channel;
     }
 
-    public function getPayload(): object
+    public function getPayload(): array
     {
         return $this->payload;
     }
@@ -48,7 +48,7 @@ class ExternalMessage implements SubscribeMessageInterface
         return $this->messageId;
     }
 
-    public function getOriginatedMessageId(): ?string
+    public function getOriginatedMessageId(): string
     {
         return $this->originatedMessageId;
     }

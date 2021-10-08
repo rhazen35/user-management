@@ -28,6 +28,8 @@ services:
       - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=5.7
     volumes:
       - ../:/var/www
+    ports:
+      - "${PHP_FPM_EXPOSED_PORT}:9000"
 
   nginx:
     container_name: ${COMPOSE_PROJECT_NAME}-webserver
