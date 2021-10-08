@@ -1,0 +1,3 @@
+constraint:
+  user:
+    email_in_use: The email adress "%email%" is already taken.

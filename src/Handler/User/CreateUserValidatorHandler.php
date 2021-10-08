@@ -6,12 +6,15 @@ namespace App\Handler\User;
 
 use App\Messenger\Event\User\InvalidCreateUserEventFactory;
 use App\Messenger\External\ExternalMessage;
+use App\Model\User\CreateUserData;
+use App\Validator\ValidationTrait;
 use App\ViewTransformer\Validator\FormViolationListViewFactory;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateUserValidatorHandler
 {
+    use ValidationTrait;
+
     private FormViolationListViewFactory $formViolationListViewFactory;
     private InvalidCreateUserEventFactory $invalidCreateUserEventFactory;
     private MessageBusInterface $eventBus;
@@ -28,12 +31,14 @@ class CreateUserValidatorHandler
 
     public function __invoke(
         ExternalMessage $externalMessage,
-        FormInterface $form
+        CreateUserData $createUserData
     ): bool {
-        if (!$form->isValid()) {
+        $violations = $this->validate($createUserData);
+
+        if ($violations->count() > 0) {
             $violations = $this
                 ->formViolationListViewFactory
-                ->flattenForForm($form);
+                ->__invoke($violations);
 
             $envelope = $this
                 ->invalidCreateUserEventFactory

@@ -6,13 +6,19 @@ namespace App\Model\User;
 
 class CreateUserDataFactory
 {
-    public function createArrayFromPayload(object $payload): array
+    public function create(): CreateUserData
     {
-        return [
-            'firstName' => $payload->firstName ?? null,
-            'lastName' => $payload->lastName ?? null,
-            'email' => $payload->email ?? null,
-            'password' => $payload->password ?? null,
-        ];
+        return new CreateUserData();
+    }
+
+    public function createFromPayload(object $payload): CreateUserData
+    {
+        $createUserData = new CreateUserData();
+
+        return $createUserData
+            ->setFirstName($payload->firstName ?? null)
+            ->setLastName($payload->lastName ?? null)
+            ->setEmail($payload->email ?? null)
+            ->setPassword($payload->password ?? null);
     }
 }

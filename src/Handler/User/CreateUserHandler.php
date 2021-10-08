@@ -5,39 +5,34 @@ declare(strict_types=1);
 namespace App\Handler\User;
 
 use App\Enum\User\Channel;
-use App\Form\Type\User\CreateUserType;
 use App\Handler\Contract\HandlerInterface;
 use App\Messenger\External\ExternalMessage;
-use App\Model\User\CreateUserData;
+use App\Messenger\Message;
 use App\Model\User\CreateUserDataFactory;
 use App\Model\User\Manager;
-use Symfony\Component\Form\FormFactoryInterface;
 
 class CreateUserHandler implements HandlerInterface
 {
-    private FormFactoryInterface $formFactory;
     private CreateUserDataFactory $createUserDataFactory;
     private CreateUserValidatorHandler $createUserValidatorHandler;
     private Manager $manager;
     private UserCreatedHandler $userCreatedHandler;
 
     public function __construct(
-        FormFactoryInterface $formFactory,
         CreateUserDataFactory $createUserDataFactory,
         CreateUserValidatorHandler $createUserValidatorHandler,
         Manager $manager,
         UserCreatedHandler $userCreatedHandler
     ) {
-        $this->formFactory = $formFactory;
         $this->createUserDataFactory = $createUserDataFactory;
         $this->createUserValidatorHandler = $createUserValidatorHandler;
         $this->manager = $manager;
         $this->userCreatedHandler = $userCreatedHandler;
     }
 
-    public function supports(ExternalMessage $externalMessage): bool
+    public function supports(Message $message): bool
     {
-        if (Channel::CREATE_USER !== $externalMessage->getChannel()) {
+        if (Channel::CREATE_USER !== $message->getChannel()) {
             return false;
         }
 
@@ -48,31 +43,22 @@ class CreateUserHandler implements HandlerInterface
     {
         $createUserData = $this
             ->createUserDataFactory
-            ->createArrayFromPayload($externalMessage->getPayload());
-
-        $form = $this
-            ->formFactory
-            ->create(CreateUserType::class);
-
-        $form->submit($createUserData);
+            ->createFromPayload($externalMessage->getPayload());
 
         $isValid = $this
             ->createUserValidatorHandler
             ->__invoke(
                 $externalMessage,
-                $form
+                $createUserData
             );
 
         if (!$isValid) {
             return;
         }
 
-        /** @var CreateUserData $data */
-        $data = $form->getData();
-
         $user = $this
             ->manager
-            ->createAndFlush($data);
+            ->createAndFlush($createUserData);
 
         $this
             ->userCreatedHandler

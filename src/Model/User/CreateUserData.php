@@ -4,71 +4,58 @@ declare(strict_types=1);
 
 namespace App\Model\User;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 class CreateUserData
 {
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type(type="string")
-     */
-    private string $firstName;
+    private ?string $firstName;
+    private ?string $lastName;
+    private ?string $email;
+    private ?string $password;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type(type="string")
-     */
-    private string $lastName;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type(type="string")
-     */
-    private string $email;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type(type="string")
-     */
-    private string $password;
-
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): void
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 }

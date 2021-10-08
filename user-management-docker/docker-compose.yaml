@@ -2,7 +2,6 @@ version: '3'
 
 services:
   database:
-    container_name: ${COMPOSE_PROJECT_NAME}-database
     build:
       context: ./database
     environment:
@@ -17,7 +16,6 @@ services:
       - ./database/data:/var/lib/mysql
 
   php-fpm:
-    container_name: ${COMPOSE_PROJECT_NAME}-php-fpm
     build:
       context: ./php-fpm
     depends_on:
@@ -32,7 +30,6 @@ services:
       - "${PHP_FPM_EXPOSED_PORT}:9000"
 
   nginx:
-    container_name: ${COMPOSE_PROJECT_NAME}-webserver
     build:
       context: ./nginx
     volumes:
