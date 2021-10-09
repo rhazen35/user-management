@@ -6,6 +6,7 @@ namespace App\Provider\User;
 
 use App\Entity\User\User;
 use App\Repository\User\UserRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
 
 class UserProvider
@@ -20,10 +21,22 @@ class UserProvider
     /**
      * @throws NonUniqueResultException
      */
-    public function getUserByEmail(string $email): ?User
+    public function getUserOrNullByEmail(string $email): ?User
     {
         return $this
             ->userRepository
             ->findOneOrNullByEmail($email);
     }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws EntityNotFoundException
+     */
+    public function getUserByEmail(string $email): ?User
+    {
+        return $this
+            ->userRepository
+            ->findOneByEmail($email);
+    }
 }
+

@@ -2,33 +2,30 @@
 
 declare(strict_types=1);
 
-namespace App\Messenger\Event\User;
+namespace App\Messenger\Event\Authentication;
 
 use App\Entity\User\User;
-use App\Enum\User\Channel;
+use App\Enum\Authentication\Channel;
 use App\Messenger\Contract\AbstractMessageFactory;
 use App\Messenger\Event\Event;
 use App\Messenger\External\ExternalMessage;
 use Symfony\Component\Messenger\Envelope;
 
-class UserCreatedEventFactory extends AbstractMessageFactory
+class AuthenticationSuccessEventFactory extends AbstractMessageFactory
 {
     public function create(
+        ExternalMessage $externalMessage,
         User $user,
-        ExternalMessage $externalMessage
+        string $token
     ): Envelope {
-        $channel = Channel::USER_CREATED;
+        $channel = Channel::USER_AUTHENTICATED;
         $idStamp = $this->getIdStamp();
-
-        $userId = $user
-            ->getId()
-            ->toRfc4122();
 
         $event = new Event(
             $channel,
             [
-                'id' => $userId,
-                'email' => $user->getEmail()
+                'id' => $user->getId(),
+                'token' => $token
             ],
             $idStamp->getId(),
             $this->getOriginatedMessageId($externalMessage)
@@ -38,7 +35,7 @@ class UserCreatedEventFactory extends AbstractMessageFactory
             $event,
             [
                 $this->getAmqpStamp($channel),
-                $idStamp
+                $idStamp,
             ]
         );
     }

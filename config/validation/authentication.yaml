@@ -1,0 +1,11 @@
+App\Factory\Authentication\Credentials:
+  constraints:
+    - App\Validator\Constraint\Authentication\CredentialsAreValid: ~
+  properties:
+    email:
+      - NotBlank:
+          message: The email is required.
+      - App\Validator\Constraint\Authentication\EmailExists: ~
+    password:
+      - NotBlank:
+          message: The password is required.

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Validator\Constraint\User;
+namespace App\Validator\Constraint\Authentication;
 
 use App\Provider\User\UserProvider;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class EmailIsNotInUseValidator extends ConstraintValidator
+class EmailExistsValidator extends ConstraintValidator
 {
     private UserProvider $userProvider;
 
@@ -20,13 +20,13 @@ class EmailIsNotInUseValidator extends ConstraintValidator
 
     /**
      * @param mixed|string $value
-     * @param Constraint|EmailIsNotInUse $constraint
+     * @param Constraint|EmailExists $constraint
      *
      * @throws NonUniqueResultException
      */
     public function validate($value, Constraint $constraint)
     {
-        assert($constraint instanceof EmailIsNotInUse);
+        assert($constraint instanceof EmailExists);
 
         if (null === $value) {
             return;
@@ -36,7 +36,7 @@ class EmailIsNotInUseValidator extends ConstraintValidator
             ->userProvider
             ->getUserOrNullByEmail($value);
 
-        if (null === $exists) {
+        if (null !== $exists) {
             return;
         }
 

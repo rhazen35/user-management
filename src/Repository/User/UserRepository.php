@@ -6,6 +6,7 @@ namespace App\Repository\User;
 
 use App\Entity\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,5 +28,25 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('email', $email)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws EntityNotFoundException
+     */
+    public function findOneByEmail(string $email): User
+    {
+        $user = $this->findOneOrNullByEmail($email);
+
+        if (null === $user) {
+            throw new EntityNotFoundException(
+                sprintf(
+                    'A user with email "%s" could not be found. ',
+                    $email
+                )
+            );
+        }
+
+        return $user;
     }
 }

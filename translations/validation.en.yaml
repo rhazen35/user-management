@@ -1,3 +1,5 @@
 constraint:
   user:
-    email_in_use: The email adress "%email%" is already taken.
+    email_in_use: The email "%email%" is already taken.
+  authentication:
+    email_does_not_exists: The email "%email%" does not exists.

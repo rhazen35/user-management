@@ -1,3 +1,0 @@
-gesdinet_jwt_refresh_token:
-  user_provider: user_provider
-  user_identity_field: email

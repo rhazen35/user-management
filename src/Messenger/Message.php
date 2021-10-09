@@ -35,7 +35,10 @@ class Message
         return $this->channel;
     }
 
-    public function getPayload(): object
+    /**
+     * @return array|object
+     */
+    public function getPayload()
     {
         return $this->payload;
     }

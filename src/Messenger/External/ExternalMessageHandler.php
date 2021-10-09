@@ -19,6 +19,9 @@ class ExternalMessageHandler implements MessageHandlerInterface
 
     public function __invoke(ExternalMessage $externalMessage): void
     {
+        // TODO: ensure the token is valid
+        // If not, send corresponding events (expired, invalid)
+
         $isHandled = false;
         /** @var HandlerInterface $handler */
         foreach ($this->handlers as $handler) {
