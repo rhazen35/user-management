@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Handler\User;
+namespace App\Handler\User\Create;
 
 use App\Enum\User\Channel;
 use App\Handler\Contract\HandlerInterface;
-use App\Messenger\External\ExternalMessage;
 use App\Messenger\Message;
 use App\Model\User\CreateUserDataFactory;
 use App\Model\User\Manager;
@@ -39,16 +38,16 @@ class CreateUserHandler implements HandlerInterface
         return true;
     }
 
-    public function __invoke(ExternalMessage $externalMessage): void
+    public function __invoke(Message $message): void
     {
         $createUserData = $this
             ->createUserDataFactory
-            ->createFromPayload($externalMessage->getPayload());
+            ->createFromPayload($message->getPayload());
 
         $isValid = $this
             ->createUserValidatorHandler
             ->__invoke(
-                $externalMessage,
+                $message,
                 $createUserData
             );
 
@@ -64,7 +63,7 @@ class CreateUserHandler implements HandlerInterface
             ->userCreatedHandler
             ->__invoke(
                 $user,
-                $externalMessage
+                $message
             );
     }
 }

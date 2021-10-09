@@ -6,7 +6,7 @@ namespace App\Handler\Authentication;
 
 use App\Factory\Authentication\Credentials;
 use App\Messenger\Event\Authentication\InvalidCredentialsEventFactory;
-use App\Messenger\External\ExternalMessage;
+use App\Messenger\Message;
 use App\Validator\ValidationTrait;
 use App\ViewTransformer\Validator\FormViolationListViewFactory;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -31,7 +31,7 @@ class CredentialsValidatorHandler
 
     public function __invoke(
         Credentials $credentials,
-        ExternalMessage $externalMessage
+        Message $message
     ): bool {
         $violations = $this->validate($credentials);
 
@@ -43,7 +43,7 @@ class CredentialsValidatorHandler
             $envelope = $this
                 ->invalidCredentialsEventFactory
                 ->create(
-                    $externalMessage,
+                    $message,
                     $violations
                 );
 

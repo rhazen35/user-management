@@ -7,7 +7,6 @@ namespace App\Handler\Authentication;
 use App\Enum\Authentication\Channel;
 use App\Factory\Authentication\CredentialsFactory;
 use App\Handler\Contract\HandlerInterface;
-use App\Messenger\External\ExternalMessage;
 use App\Messenger\Message;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -37,7 +36,7 @@ class AuthenticateUserHandler implements HandlerInterface
      * @throws NonUniqueResultException
      * @throws EntityNotFoundException
      */
-    public function __invoke(ExternalMessage $message): void
+    public function __invoke(Message $message): void
     {
         $credentials = $this
             ->credentialsFactory

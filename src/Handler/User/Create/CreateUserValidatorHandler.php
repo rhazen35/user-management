@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Handler\User;
+namespace App\Handler\User\Create;
 
 use App\Messenger\Event\User\InvalidCreateUserEventFactory;
-use App\Messenger\External\ExternalMessage;
+use App\Messenger\Message;
 use App\Model\User\CreateUserData;
 use App\Validator\ValidationTrait;
 use App\ViewTransformer\Validator\FormViolationListViewFactory;
@@ -30,7 +30,7 @@ class CreateUserValidatorHandler
     }
 
     public function __invoke(
-        ExternalMessage $externalMessage,
+        Message $message,
         CreateUserData $createUserData
     ): bool {
         $violations = $this->validate($createUserData);
@@ -43,7 +43,7 @@ class CreateUserValidatorHandler
             $envelope = $this
                 ->invalidCreateUserEventFactory
                 ->create(
-                    $externalMessage,
+                    $message,
                     $violations
                 );
 

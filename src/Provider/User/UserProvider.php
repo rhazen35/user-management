@@ -8,6 +8,7 @@ use App\Entity\User\User;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Component\Uid\UuidV4;
 
 class UserProvider
 {
@@ -16,6 +17,17 @@ class UserProvider
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws EntityNotFoundException
+     */
+    public function getUserById(UuidV4 $id): User
+    {
+        return $this
+            ->userRepository
+            ->findOneById($id);
     }
 
     /**

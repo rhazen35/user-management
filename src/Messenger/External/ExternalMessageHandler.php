@@ -6,27 +6,42 @@ namespace App\Messenger\External;
 
 use App\Handler\Contract\HandlerInterface;
 use App\Messenger\Exception\NoHandlerFoundException;
+use App\Messenger\Message;
+use App\Validator\Messenger\Message\MessageValidator;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class ExternalMessageHandler implements MessageHandlerInterface
 {
     private iterable $handlers;
+    private MessageValidator $messageValidator;
 
-    public function __construct(iterable $handlers)
-    {
+    public function __construct(
+        iterable $handlers,
+        MessageValidator $messageValidator
+    ) {
         $this->handlers = $handlers;
+        $this->messageValidator = $messageValidator;
     }
 
-    public function __invoke(ExternalMessage $externalMessage): void
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function __invoke(Message $message): void
     {
-        // TODO: ensure the token is valid
-        // If not, send corresponding events (expired, invalid)
+        $isValid = $this
+            ->messageValidator
+            ->__invoke($message);
+
+        if (!$isValid) {
+            return;
+        }
 
         $isHandled = false;
         /** @var HandlerInterface $handler */
         foreach ($this->handlers as $handler) {
-            if ($handler->supports($externalMessage)) {
-                $handler->__invoke($externalMessage);
+            if ($handler->supports($message)) {
+                $handler->__invoke($message);
 
                 $isHandled = true;
                 break;
@@ -37,7 +52,7 @@ class ExternalMessageHandler implements MessageHandlerInterface
             throw new NoHandlerFoundException(
                 sprintf(
                     'No handler could be found for channel: %s.',
-                    $externalMessage->getChannel()
+                    $message->getChannel()
                 )
             );
         }

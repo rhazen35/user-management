@@ -14,7 +14,7 @@ framework:
                         type: direct
                         default_publish_routing_key: direct
                     queues:
-                        user_management:
+                        user_management_subscribe:
                             binding_keys:
                                 - create_user
                                 - authenticate_user
@@ -27,6 +27,18 @@ framework:
                         type: direct
                         default_publish_routing_key: direct
 
+            query:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
+                options:
+                    exchange:
+                        name: amq.direct
+                        type: direct
+                        default_publish_routing_key: direct
+                    queues:
+                        user_management_query:
+                            binding_keys:
+                                - get_user
+
         default_bus: command_bus
         buses:
             command_bus:
@@ -37,7 +49,12 @@ framework:
                 default_middleware: allow_no_handlers
                 middleware:
                     - App\Messenger\Middleware\AuditMiddleware
+            query_bus:
+                default_middleware: allow_no_handlers
+                middleware:
+                    - App\Messenger\Middleware\AuditMiddleware
 
         routing:
             'App\Messenger\Contract\SubscribeMessageInterface': subscribe
             'App\Messenger\Contract\PublishMessageInterface': publish
+            'App\Messenger\Contract\QueryMessageInterface': query

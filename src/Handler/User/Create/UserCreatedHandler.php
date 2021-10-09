@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Handler\User;
+namespace App\Handler\User\Create;
 
 use App\Entity\User\User;
 use App\Messenger\Event\User\UserCreatedEventFactory;
-use App\Messenger\External\ExternalMessage;
+use App\Messenger\Message;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class UserCreatedHandler
@@ -24,13 +24,13 @@ class UserCreatedHandler
 
     public function __invoke(
         User $user,
-        ExternalMessage $externalMessage
+        Message $message
     ) {
         $envelope = $this
             ->userCreatedEventFactory
             ->create(
                 $user,
-                $externalMessage
+                $message
             );
 
         $this

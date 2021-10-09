@@ -7,13 +7,13 @@ namespace App\Messenger\Event\User;
 use App\Enum\User\Channel;
 use App\Messenger\Contract\AbstractMessageFactory;
 use App\Messenger\Event\Event;
-use App\Messenger\External\ExternalMessage;
+use App\Messenger\Message;
 use Symfony\Component\Messenger\Envelope;
 
 class InvalidCreateUserEventFactory extends AbstractMessageFactory
 {
     public function create(
-        ExternalMessage $externalMessage,
+        Message $message,
         array $violations
     ): Envelope {
         $channel = Channel::INVALID_CREATE_USER;
@@ -23,7 +23,7 @@ class InvalidCreateUserEventFactory extends AbstractMessageFactory
             $channel,
             ['violations' => $violations],
             $idStamp->getId(),
-            $this->getOriginatedMessageId($externalMessage)
+            $this->getOriginatedMessageId($message)
         );
 
         return new Envelope(

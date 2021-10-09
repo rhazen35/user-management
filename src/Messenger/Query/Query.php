@@ -2,24 +2,29 @@
 
 declare(strict_types=1);
 
-namespace App\Messenger\External;
+namespace App\Messenger\Query;
 
-use App\Messenger\Contract\SubscribeMessageInterface;
+use App\Messenger\Contract\QueryMessageInterface;
+use App\Messenger\Internal\InternalMessageAwareInterface;
+use App\Messenger\Internal\InternalMessageTrait;
 use App\Messenger\Message;
 use App\Messenger\Token\TokenAwareInterface;
 use App\Messenger\Token\TokenTrait;
 
-final class ExternalMessage extends Message implements
-    SubscribeMessageInterface,
-    TokenAwareInterface
+class Query extends Message implements
+    QueryMessageInterface,
+    TokenAwareInterface,
+    InternalMessageAwareInterface
 {
     use TokenTrait;
+    use InternalMessageTrait;
 
     public function __construct(
         string $channel,
-               $payload,
-        string $messageId,
+               $payload, string
+               $messageId,
         ?string $originatedMessageId,
+        bool $internal,
         ?string $token
     ) {
         parent::__construct(
@@ -29,6 +34,7 @@ final class ExternalMessage extends Message implements
             $originatedMessageId
         );
 
+        $this->internal = $internal;
         $this->token = $token;
     }
 }

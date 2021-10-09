@@ -6,7 +6,7 @@ namespace App\Handler\Authentication;
 
 use App\Factory\Authentication\Credentials;
 use App\Messenger\Event\Authentication\AuthenticationSuccessEventFactory;
-use App\Messenger\External\ExternalMessage;
+use App\Messenger\Message;
 use App\Provider\User\UserProvider;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -42,7 +42,7 @@ class AuthenticationSuccessHandler
      */
     public function __invoke(
         Credentials $credentials,
-        ExternalMessage $externalMessage
+        Message $message
     ): void {
         $user = $this
             ->userProvider
@@ -62,7 +62,7 @@ class AuthenticationSuccessHandler
         $envelope = $this
             ->authenticationSuccessEventFactory
             ->create(
-                $externalMessage,
+                $message,
                 $user,
                 $token
             );

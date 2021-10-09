@@ -8,13 +8,13 @@ use App\Entity\User\User;
 use App\Enum\Authentication\Channel;
 use App\Messenger\Contract\AbstractMessageFactory;
 use App\Messenger\Event\Event;
-use App\Messenger\External\ExternalMessage;
+use App\Messenger\Message;
 use Symfony\Component\Messenger\Envelope;
 
 class AuthenticationSuccessEventFactory extends AbstractMessageFactory
 {
     public function create(
-        ExternalMessage $externalMessage,
+        Message $message,
         User $user,
         string $token
     ): Envelope {
@@ -28,7 +28,7 @@ class AuthenticationSuccessEventFactory extends AbstractMessageFactory
                 'token' => $token
             ],
             $idStamp->getId(),
-            $this->getOriginatedMessageId($externalMessage)
+            $this->getOriginatedMessageId($message)
         );
 
         return new Envelope(

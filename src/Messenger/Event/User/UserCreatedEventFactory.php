@@ -8,14 +8,14 @@ use App\Entity\User\User;
 use App\Enum\User\Channel;
 use App\Messenger\Contract\AbstractMessageFactory;
 use App\Messenger\Event\Event;
-use App\Messenger\External\ExternalMessage;
+use App\Messenger\Message;
 use Symfony\Component\Messenger\Envelope;
 
 class UserCreatedEventFactory extends AbstractMessageFactory
 {
     public function create(
         User $user,
-        ExternalMessage $externalMessage
+        Message $message
     ): Envelope {
         $channel = Channel::USER_CREATED;
         $idStamp = $this->getIdStamp();
@@ -26,12 +26,9 @@ class UserCreatedEventFactory extends AbstractMessageFactory
 
         $event = new Event(
             $channel,
-            [
-                'id' => $userId,
-                'email' => $user->getEmail()
-            ],
+            ['id' => $userId],
             $idStamp->getId(),
-            $this->getOriginatedMessageId($externalMessage)
+            $this->getOriginatedMessageId($message)
         );
 
         return new Envelope(
