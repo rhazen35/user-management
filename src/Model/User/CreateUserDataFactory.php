@@ -6,11 +6,6 @@ namespace App\Model\User;
 
 class CreateUserDataFactory
 {
-    public function create(): CreateUserData
-    {
-        return new CreateUserData();
-    }
-
     public function createFromPayload(object $payload): CreateUserData
     {
         $createUserData = new CreateUserData();
