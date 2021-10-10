@@ -44,7 +44,7 @@ class UserProvider
      * @throws NonUniqueResultException
      * @throws EntityNotFoundException
      */
-    public function getUserByEmail(string $email): ?User
+    public function getUserByEmail(string $email): User
     {
         return $this
             ->userRepository

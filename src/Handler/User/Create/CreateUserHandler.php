@@ -31,11 +31,7 @@ class CreateUserHandler implements HandlerInterface
 
     public function supports(Message $message): bool
     {
-        if (Channel::CREATE_USER !== $message->getChannel()) {
-            return false;
-        }
-
-        return true;
+        return Channel::CREATE_USER !== $message->getChannel();
     }
 
     public function __invoke(Message $message): void

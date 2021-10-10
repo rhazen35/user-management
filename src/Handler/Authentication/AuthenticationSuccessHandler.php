@@ -5,35 +5,30 @@ declare(strict_types=1);
 namespace App\Handler\Authentication;
 
 use App\Factory\Authentication\Credentials;
-use App\Messenger\Event\Authentication\AuthenticationSuccessEventFactory;
 use App\Messenger\Message;
 use App\Provider\User\UserProvider;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler as LexikSuccessHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class AuthenticationSuccessHandler
 {
     private UserProvider $userProvider;
     private JWTTokenManagerInterface $jwtManager;
     private LexikSuccessHandler $authenticationSuccessHandler;
-    private AuthenticationSuccessEventFactory $authenticationSuccessEventFactory;
-    private MessageBusInterface $eventBus;
+    private AuthenticationSuccessMessageHandler $authenticationSuccessMessageHandler;
 
     public function __construct(
         UserProvider $userProvider,
         JWTTokenManagerInterface $jwtManager,
         LexikSuccessHandler $authenticationSuccessHandler,
-        AuthenticationSuccessEventFactory $authenticationSuccessEventFactory,
-        MessageBusInterface $eventBus
+        AuthenticationSuccessMessageHandler $authenticationSuccessMessageHandler
     ) {
         $this->userProvider = $userProvider;
         $this->jwtManager = $jwtManager;
         $this->authenticationSuccessHandler = $authenticationSuccessHandler;
-        $this->authenticationSuccessEventFactory = $authenticationSuccessEventFactory;
-        $this->eventBus = $eventBus;
+        $this->authenticationSuccessMessageHandler = $authenticationSuccessMessageHandler;
     }
 
     /**
@@ -59,16 +54,12 @@ class AuthenticationSuccessHandler
                 $token
             );
 
-        $envelope = $this
-            ->authenticationSuccessEventFactory
-            ->create(
+        $this
+            ->authenticationSuccessMessageHandler
+            ->__invoke(
                 $message,
                 $user,
                 $token
             );
-
-        $this
-            ->eventBus
-            ->dispatch($envelope);
     }
 }

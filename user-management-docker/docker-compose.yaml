@@ -42,3 +42,12 @@ services:
       - php-fpm
     ports:
       - "${WEBSERVER_EXPOSED_PORT}:80"
+
+  mercure:
+    image: dunglas/mercure
+    command: caddy run -config /etc/caddy/Caddyfile.dev
+    ports: [ '3000:80' ]
+    environment:
+      SERVER_NAME: ':80'
+      MERCURE_PUBLISHER_JWT_KEY: '!ChangeMe!'
+      MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeMe!'
