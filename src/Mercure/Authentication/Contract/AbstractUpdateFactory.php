@@ -15,6 +15,11 @@ class AbstractUpdateFactory
         $this->mercurePublicUrl = $mercurePublicUrl;
     }
 
+    protected function getTopic(string $channel): string
+    {
+        return $this->mercurePublicUrl.DIRECTORY_SEPARATOR.$channel;
+    }
+
     protected function getOriginatedMessageId(Message $message): ?string
     {
         return $message->getOriginatedMessageId() ?? $message->getMessageId();

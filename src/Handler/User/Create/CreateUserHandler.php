@@ -15,13 +15,13 @@ class CreateUserHandler implements HandlerInterface
     private CreateUserDataFactory $createUserDataFactory;
     private CreateUserValidatorHandler $createUserValidatorHandler;
     private Manager $manager;
-    private UserCreatedHandler $userCreatedHandler;
+    private UserCreatedMessageHandler $userCreatedHandler;
 
     public function __construct(
         CreateUserDataFactory $createUserDataFactory,
         CreateUserValidatorHandler $createUserValidatorHandler,
         Manager $manager,
-        UserCreatedHandler $userCreatedHandler
+        UserCreatedMessageHandler $userCreatedHandler
     ) {
         $this->createUserDataFactory = $createUserDataFactory;
         $this->createUserValidatorHandler = $createUserValidatorHandler;
@@ -31,7 +31,7 @@ class CreateUserHandler implements HandlerInterface
 
     public function supports(Message $message): bool
     {
-        return Channel::CREATE_USER !== $message->getChannel();
+        return Channel::CREATE_USER === $message->getChannel();
     }
 
     public function __invoke(Message $message): void
