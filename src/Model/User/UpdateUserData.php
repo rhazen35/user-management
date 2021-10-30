@@ -4,25 +4,31 @@ declare(strict_types=1);
 
 namespace App\Model\User;
 
-class CreateUserData
+use App\Entity\User\User;
+
+class UpdateUserData
 {
+    private ?User $user;
     private ?string $firstName;
     private ?string $lastName;
     private ?string $email;
-    private ?string $password;
 
     public function __construct(
+        ?User $user,
         ?string $firstName,
         ?string $lastName,
-        ?string $email,
-        ?string $password
+        ?string $email
     ) {
+        $this->user = $user;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
-        $this->password = $password;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
     public function getFirstName(): ?string
     {
@@ -37,10 +43,5 @@ class CreateUserData
     public function getEmail(): ?string
     {
         return $this->email;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\User\Data;
 
 use App\Enum\User\Channel;
+use App\Enum\User\Properties;
 use App\Handler\Contract\HandlerInterface;
 use App\Messenger\Message;
 use App\Messenger\Query\User\GetUserQueryResultFactory;
@@ -42,7 +43,7 @@ class GetUserQueryHandler implements HandlerInterface
     public function __invoke(Message $message): void
     {
         $payload = $message->getPayload();
-        $id = $payload['id'] ?? null;
+        $id = $payload[Properties::ID] ?? null;
 
         if (null === $id) {
             return;

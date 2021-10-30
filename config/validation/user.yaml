@@ -39,3 +39,36 @@ App\Model\User\CreateUserData:
       - Regex:
           pattern: "#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W).*$#"
           message: The password must at least contain 8 characters, one number, one upper case letter, one lower case letter and one special character.
+
+App\Model\User\UpdateUserData:
+  properties:
+    user:
+      - Notblank:
+          message: The user is not valid.
+    firstName:
+      - NotBlank:
+          message: The firstname is required.
+      - Length:
+          min: 2
+          max: 100
+          minMessage: Please use at least 2 characters.
+          maxMessage: A maximum of 100 characters are allowed.
+      - Regex:
+          pattern: "/^[A-Za-z]+$/"
+          message: Only letters are allowed.
+    lastName:
+      - NotBlank:
+          message: The lastname is required.
+      - Length:
+          min: 2
+          max: 150
+          minMessage: Please use at least 2 characters.
+          maxMessage: A maximum of 150 characters are allowed.
+      - Regex:
+          pattern: "/^[A-Za-z]+$/"
+          message: Only letters are allowed.
+    email:
+      - NotBlank:
+          message: The email is required.
+      - Email:
+          message: The email "{{ value }}" is not a valid email.

@@ -8,12 +8,11 @@ class CreateUserDataFactory
 {
     public function createFromPayload(object $payload): CreateUserData
     {
-        $createUserData = new CreateUserData();
-
-        return $createUserData
-            ->setFirstName($payload->firstName ?? null)
-            ->setLastName($payload->lastName ?? null)
-            ->setEmail($payload->email ?? null)
-            ->setPassword($payload->password ?? null);
+        return new CreateUserData(
+            $payload->firstName ?? null,
+            $payload->lastName ?? null,
+            $payload->email ?? null,
+            $payload->password ?? null,
+        );
     }
 }

@@ -33,6 +33,16 @@ class UserProvider
     /**
      * @throws NonUniqueResultException
      */
+    public function getUserOrNullById(UuidV4 $id): ?User
+    {
+        return $this
+            ->userRepository
+            ->findOneOrNullById($id);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
     public function getUserOrNullByEmail(string $email): ?User
     {
         return $this

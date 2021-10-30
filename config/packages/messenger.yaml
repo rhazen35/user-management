@@ -17,6 +17,7 @@ framework:
                         user_management_subscribe:
                             binding_keys:
                                 - create_user
+                                - update_user
                                 - authenticate_user
 
             publish:

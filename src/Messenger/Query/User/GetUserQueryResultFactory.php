@@ -6,6 +6,7 @@ namespace App\Messenger\Query\User;
 
 use App\Entity\User\User;
 use App\Enum\User\Channel;
+use App\Enum\User\Properties;
 use App\Messenger\Contract\AbstractMessageFactory;
 use App\Messenger\Message;
 use App\Messenger\Query\QueryResult;
@@ -22,7 +23,7 @@ class GetUserQueryResultFactory extends AbstractMessageFactory
 
         $queryResult = new QueryResult(
             $channel,
-            ['email' => $user->getEmail()],
+            [Properties::EMAIL => $user->getEmail()],
             $idStamp->getId(),
             $this->getOriginatedMessageId($message)
         );

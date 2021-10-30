@@ -12,13 +12,13 @@ use App\Messenger\Event\Event;
 use App\Messenger\Message;
 use Symfony\Component\Messenger\Envelope;
 
-class UserCreatedEventFactory extends AbstractMessageFactory
+class UserUpdatedEventFactory extends AbstractMessageFactory
 {
     public function create(
         User $user,
         Message $message
     ): Envelope {
-        $channel = Channel::USER_CREATED;
+        $channel = Channel::USER_UPDATED;
         $idStamp = $this->getIdStamp();
 
         $userId = $user
