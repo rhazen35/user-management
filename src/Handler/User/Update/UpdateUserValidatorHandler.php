@@ -6,7 +6,7 @@ namespace App\Handler\User\Update;
 
 use App\Messenger\Event\User\InvalidUpdateUserEventFactory;
 use App\Messenger\Message;
-use App\Model\User\UpdateUserData;
+use App\Model\User\UpdateData;
 use App\Validator\ValidationTrait;
 use App\ViewTransformer\Validator\FormViolationListViewFactory;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -31,7 +31,7 @@ class UpdateUserValidatorHandler
 
     public function __invoke(
         Message $message,
-        UpdateUserData $updateUserData
+        UpdateData $updateUserData
     ): bool {
         $violations = $this->validate($updateUserData);
 

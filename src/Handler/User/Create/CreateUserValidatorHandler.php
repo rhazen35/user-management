@@ -6,7 +6,7 @@ namespace App\Handler\User\Create;
 
 use App\Messenger\Event\User\InvalidCreateUserEventFactory;
 use App\Messenger\Message;
-use App\Model\User\CreateUserData;
+use App\Model\User\CreateData;
 use App\Validator\ValidationTrait;
 use App\ViewTransformer\Validator\FormViolationListViewFactory;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -31,7 +31,7 @@ class CreateUserValidatorHandler
 
     public function __invoke(
         Message $message,
-        CreateUserData $createUserData
+        CreateData $createUserData
     ): bool {
         $violations = $this->validate($createUserData);
 

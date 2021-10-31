@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\User;
 
-class CreateUserData
+class CreateData
 {
     private ?string $firstName;
     private ?string $lastName;

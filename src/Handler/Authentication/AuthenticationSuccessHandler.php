@@ -6,7 +6,6 @@ namespace App\Handler\Authentication;
 
 use App\Factory\Authentication\Credentials;
 use App\Messenger\Message;
-use App\Model\User\Manager;
 use App\Provider\User\UserProvider;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -60,7 +59,10 @@ class AuthenticationSuccessHandler
 
         $this
             ->loginHandler
-            ->__invoke($user);
+            ->__invoke(
+                $user,
+                $message
+            );
 
         $this
             ->authenticationSuccessMessageHandler

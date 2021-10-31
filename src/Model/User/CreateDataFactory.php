@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\User;
 
-class CreateUserDataFactory
+class CreateDataFactory
 {
-    public function createFromPayload(object $payload): CreateUserData
+    public function createFromPayload(object $payload): CreateData
     {
-        return new CreateUserData(
+        return new CreateData(
             $payload->firstName ?? null,
             $payload->lastName ?? null,
             $payload->email ?? null,

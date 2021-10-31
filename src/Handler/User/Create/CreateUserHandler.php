@@ -8,28 +8,28 @@ use App\Enum\User\Channel;
 use App\Handler\Contract\HandlerInterface;
 use App\Messenger\External\ExternalMessage;
 use App\Messenger\Message;
-use App\Model\User\CreateUserDataFactory;
-use App\Model\User\Manager;
+use App\Model\User\CreateDataFactory;
+use App\Model\User\CreateManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 
 class CreateUserHandler implements HandlerInterface
 {
-    private CreateUserDataFactory $createUserDataFactory;
+    private CreateDataFactory $createUserDataFactory;
     private CreateUserValidatorHandler $createUserValidatorHandler;
-    private Manager $manager;
+    private CreateManager $createUserManager;
     private UserCreatedMessageHandler $userCreatedHandler;
 
     public function __construct(
-        CreateUserDataFactory $createUserDataFactory,
+        CreateDataFactory          $createUserDataFactory,
         CreateUserValidatorHandler $createUserValidatorHandler,
-        Manager $manager,
-        UserCreatedMessageHandler $userCreatedHandler
+        CreateManager              $createUserManager,
+        UserCreatedMessageHandler  $userCreatedHandler
     ) {
         $this->createUserDataFactory = $createUserDataFactory;
         $this->createUserValidatorHandler = $createUserValidatorHandler;
-        $this->manager = $manager;
+        $this->createUserManager = $createUserManager;
         $this->userCreatedHandler = $userCreatedHandler;
     }
 
@@ -63,8 +63,8 @@ class CreateUserHandler implements HandlerInterface
         }
 
         $user = $this
-            ->manager
-            ->createAndFlush(
+            ->createUserManager
+            ->__invoke(
                 $createUserData,
                 $message
             );

@@ -41,7 +41,7 @@ class Factory
             ->eraseCredentials();
     }
 
-    public function createFromData(CreateUserData $data): User
+    public function createFromData(CreateData $data): User
     {
         $user = $this->create();
 

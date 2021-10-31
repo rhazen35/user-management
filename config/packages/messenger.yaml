@@ -18,6 +18,7 @@ framework:
                             binding_keys:
                                 - create_user
                                 - update_user
+                                - delete_user
                                 - authenticate_user
 
             publish:

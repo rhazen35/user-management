@@ -8,28 +8,28 @@ use App\Enum\User\Channel;
 use App\Handler\Contract\HandlerInterface;
 use App\Messenger\External\ExternalMessage;
 use App\Messenger\Message;
-use App\Model\User\Manager;
-use App\Model\User\UpdateUserDataFactory;
+use App\Model\User\UpdateDataFactory;
+use App\Model\User\UpdateManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 
 class UpdateUserHandler implements HandlerInterface
 {
-    private UpdateUserDataFactory $updateUserDataFactory;
+    private UpdateDataFactory $updateUserDataFactory;
     private UpdateUserValidatorHandler $updateUserValidatorHandler;
-    private Manager $manager;
+    private UpdateManager $updateUserManager;
     private UserUpdatedMessageHandler $userUpdatedMessageHandler;
 
     public function __construct(
-        UpdateUserDataFactory $updateUserDataFactory,
+        UpdateDataFactory          $updateUserDataFactory,
         UpdateUserValidatorHandler $updateUserValidatorHandler,
-        Manager $manager,
-        UserUpdatedMessageHandler $userUpdatedMessageHandler
+        UpdateManager              $updateUserManager,
+        UserUpdatedMessageHandler  $userUpdatedMessageHandler
     ) {
         $this->updateUserDataFactory = $updateUserDataFactory;
         $this->updateUserValidatorHandler = $updateUserValidatorHandler;
-        $this->manager = $manager;
+        $this->updateUserManager = $updateUserManager;
         $this->userUpdatedMessageHandler = $userUpdatedMessageHandler;
     }
 
@@ -64,8 +64,8 @@ class UpdateUserHandler implements HandlerInterface
         }
 
         $user = $this
-            ->manager
-            ->updateAndFlush(
+            ->updateUserManager
+            ->__invoke(
                 $updateUserData,
                 $message
             );

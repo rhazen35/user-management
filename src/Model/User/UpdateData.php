@@ -6,7 +6,7 @@ namespace App\Model\User;
 
 use App\Entity\User\User;
 
-class UpdateUserData
+class UpdateData
 {
     private ?User $user;
     private ?string $firstName;

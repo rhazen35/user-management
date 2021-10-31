@@ -9,7 +9,7 @@ use App\Provider\User\UserProvider;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Uid\UuidV4;
 
-class UpdateUserDataFactory
+class UpdateDataFactory
 {
     private UserProvider $userProvider;
 
@@ -23,7 +23,7 @@ class UpdateUserDataFactory
      */
     public function createFromPayload(
         object $payload
-    ): UpdateUserData {
+    ): UpdateData {
         $userId = !property_exists($payload, Properties::ID)
             ? null
             : UuidV4::fromRfc4122($payload->id);
@@ -46,7 +46,7 @@ class UpdateUserDataFactory
             ? $user->getEmail()
             : $payload->email;
 
-        return new UpdateUserData(
+        return new UpdateData(
             $user,
             $firstName,
             $lastName,
