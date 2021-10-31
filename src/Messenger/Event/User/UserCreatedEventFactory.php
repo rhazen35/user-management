@@ -16,7 +16,7 @@ class UserCreatedEventFactory extends AbstractMessageFactory
 {
     public function create(
         User $user,
-        Message $message
+        ?Message $message
     ): Envelope {
         $channel = Channel::USER_CREATED;
         $idStamp = $this->getIdStamp();
@@ -25,11 +25,15 @@ class UserCreatedEventFactory extends AbstractMessageFactory
             ->getId()
             ->toRfc4122();
 
+        $originatedMessageId = null === $message
+            ? null
+            : $this->getOriginatedMessageId($message);
+
         $event = new Event(
             $channel,
             [Properties::ID => $userId],
             $idStamp->getId(),
-            $this->getOriginatedMessageId($message)
+            $originatedMessageId
         );
 
         return new Envelope(

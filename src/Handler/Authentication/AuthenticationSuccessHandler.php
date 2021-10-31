@@ -6,6 +6,7 @@ namespace App\Handler\Authentication;
 
 use App\Factory\Authentication\Credentials;
 use App\Messenger\Message;
+use App\Model\User\Manager;
 use App\Provider\User\UserProvider;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -17,17 +18,20 @@ class AuthenticationSuccessHandler
     private UserProvider $userProvider;
     private JWTTokenManagerInterface $jwtManager;
     private LexikSuccessHandler $authenticationSuccessHandler;
+    private LoginHandler $loginHandler;
     private AuthenticationSuccessMessageHandler $authenticationSuccessMessageHandler;
 
     public function __construct(
         UserProvider $userProvider,
         JWTTokenManagerInterface $jwtManager,
         LexikSuccessHandler $authenticationSuccessHandler,
+        LoginHandler $loginHandler,
         AuthenticationSuccessMessageHandler $authenticationSuccessMessageHandler
     ) {
         $this->userProvider = $userProvider;
         $this->jwtManager = $jwtManager;
         $this->authenticationSuccessHandler = $authenticationSuccessHandler;
+        $this->loginHandler = $loginHandler;
         $this->authenticationSuccessMessageHandler = $authenticationSuccessMessageHandler;
     }
 
@@ -53,6 +57,10 @@ class AuthenticationSuccessHandler
                 $user,
                 $token
             );
+
+        $this
+            ->loginHandler
+            ->__invoke($user);
 
         $this
             ->authenticationSuccessMessageHandler

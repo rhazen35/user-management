@@ -4,22 +4,30 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Development;
 
+use App\Messenger\Event\User\UserCreatedEventFactory;
 use App\Model\User\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use Generator;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class UserFixtures extends Fixture implements FixtureGroupInterface
 {
     const GROUP = "user";
 
     private Factory $factory;
+    private UserCreatedEventFactory $userCreatedEventFactory;
+    private MessageBusInterface $eventBus;
 
-    public function __construct(Factory $factory)
-    {
+    public function __construct(
+        Factory $factory,
+        UserCreatedEventFactory $userCreatedEventFactory,
+        MessageBusInterface $eventBus
+    ) {
 
         $this->factory = $factory;
+        $this->userCreatedEventFactory = $userCreatedEventFactory;
+        $this->eventBus = $eventBus;
     }
 
     private function generateAdminUserData(): array
@@ -42,6 +50,17 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
 
         $manager->persist($adminUser);
         $manager->flush();
+
+        $event = $this
+            ->userCreatedEventFactory
+            ->create(
+                $adminUser,
+                null
+            );
+
+        $this
+            ->eventBus
+            ->dispatch($event);
     }
 
     public static function getGroups(): array

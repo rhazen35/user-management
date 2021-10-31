@@ -6,9 +6,13 @@ namespace App\Handler\User\Create;
 
 use App\Enum\User\Channel;
 use App\Handler\Contract\HandlerInterface;
+use App\Messenger\External\ExternalMessage;
 use App\Messenger\Message;
 use App\Model\User\CreateUserDataFactory;
 use App\Model\User\Manager;
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\NonUniqueResultException;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 
 class CreateUserHandler implements HandlerInterface
 {
@@ -34,8 +38,15 @@ class CreateUserHandler implements HandlerInterface
         return Channel::CREATE_USER === $message->getChannel();
     }
 
+    /**
+     * @throws JWTDecodeFailureException
+     * @throws NonUniqueResultException
+     * @throws EntityNotFoundException
+     */
     public function __invoke(Message $message): void
     {
+        assert($message instanceof ExternalMessage);
+
         $createUserData = $this
             ->createUserDataFactory
             ->createFromPayload($message->getPayload());
@@ -53,7 +64,10 @@ class CreateUserHandler implements HandlerInterface
 
         $user = $this
             ->manager
-            ->createAndFlush($createUserData);
+            ->createAndFlush(
+                $createUserData,
+                $message
+            );
 
         $this
             ->userCreatedHandler

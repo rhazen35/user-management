@@ -6,10 +6,13 @@ namespace App\Handler\User\Update;
 
 use App\Enum\User\Channel;
 use App\Handler\Contract\HandlerInterface;
+use App\Messenger\External\ExternalMessage;
 use App\Messenger\Message;
 use App\Model\User\Manager;
 use App\Model\User\UpdateUserDataFactory;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 
 class UpdateUserHandler implements HandlerInterface
 {
@@ -37,9 +40,14 @@ class UpdateUserHandler implements HandlerInterface
 
     /**
      * @throws NonUniqueResultException
+     * @throws JWTDecodeFailureException
+     * @throws NonUniqueResultException
+     * @throws EntityNotFoundException
      */
     public function __invoke(Message $message): void
     {
+        assert($message instanceof ExternalMessage);
+
         $updateUserData = $this
             ->updateUserDataFactory
             ->createFromPayload($message->getPayload());
@@ -57,7 +65,10 @@ class UpdateUserHandler implements HandlerInterface
 
         $user = $this
             ->manager
-            ->updateAndFlush($updateUserData);
+            ->updateAndFlush(
+                $updateUserData,
+                $message
+            );
 
         $this
             ->userUpdatedMessageHandler

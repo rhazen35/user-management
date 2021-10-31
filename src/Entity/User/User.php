@@ -71,6 +71,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     protected ?DateTimeImmutable $currentLogin;
 
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    protected ?DateTimeImmutable $deletedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     */
+    protected ?User $createdBy;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")
+     */
+    private ?User $updatedBy;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
+     */
+    private ?User $deletedBy;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
@@ -199,6 +222,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getDeletedAt(): ?DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?DateTimeImmutable $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
     public function getRoles(): array
     {
         return [Role::ROLE_USER];
@@ -206,7 +241,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getSalt(): void
     {
-        // TODO: Implement getSalt() method.
     }
 
     public function eraseCredentials(): self
@@ -219,5 +253,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return $this->getEmail();
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?User $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    public function getDeletedBy(): ?User
+    {
+        return $this->deletedBy;
+    }
+
+    public function setDeletedBy(?User $deletedBy): self
+    {
+        $this->deletedBy = $deletedBy;
+
+        return $this;
     }
 }
