@@ -5,28 +5,23 @@ declare(strict_types=1);
 namespace App\Handler\Authentication;
 
 use App\Factory\Authentication\Credentials;
-use App\Messenger\Event\Authentication\InvalidCredentialsEventFactory;
 use App\Messenger\Message;
 use App\Validator\ValidationTrait;
 use App\ViewTransformer\Validator\FormViolationListViewFactory;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class CredentialsValidatorHandler
 {
     use ValidationTrait;
 
     private FormViolationListViewFactory $formViolationListViewFactory;
-    private InvalidCredentialsEventFactory $invalidCredentialsEventFactory;
-    private MessageBusInterface $eventBus;
+    private InvalidCredentialsMessageHandler $invalidCredentialsMessageHandler;
 
     public function __construct(
         FormViolationListViewFactory $formViolationListViewFactory,
-        InvalidCredentialsEventFactory $invalidCredentialsEventFactory,
-        MessageBusInterface $eventBus
+        InvalidCredentialsMessageHandler $invalidCredentialsMessageHandler
     ) {
         $this->formViolationListViewFactory = $formViolationListViewFactory;
-        $this->invalidCredentialsEventFactory = $invalidCredentialsEventFactory;
-        $this->eventBus = $eventBus;
+        $this->invalidCredentialsMessageHandler = $invalidCredentialsMessageHandler;
     }
 
     public function __invoke(
@@ -40,16 +35,12 @@ class CredentialsValidatorHandler
                 ->formViolationListViewFactory
                 ->__invoke($violations);
 
-            $envelope = $this
-                ->invalidCredentialsEventFactory
-                ->create(
+            $this
+                ->invalidCredentialsMessageHandler
+                ->__invoke(
                     $message,
                     $violations
                 );
-
-            $this
-                ->eventBus
-                ->dispatch($envelope);
 
             return false;
         }
