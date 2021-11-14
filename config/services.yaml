@@ -1,5 +1,5 @@
 parameters:
-    mercure.public_url: "%env(resolve:MERCURE_URL)%"
+    mercure.public_url: "%env(resolve:MERCURE_PUBLIC_URL)%"
 
 services:
     _defaults:
