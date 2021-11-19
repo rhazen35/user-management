@@ -13,7 +13,9 @@ class Channel
 
     // Read
     const GET_USER = 'get_user';
+    const GET_USERS = 'get_users';
     const GET_USER_RESULT = 'get_user_result';
+    const GET_USERS_RESULT = 'get_users_result';
 
     // Update
     const UPDATE_USER = 'update_user';

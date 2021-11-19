@@ -40,6 +40,7 @@ framework:
                         user_management_query:
                             binding_keys:
                                 - get_user
+                                - get_users
 
         default_bus: command_bus
         buses:
