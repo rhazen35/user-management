@@ -156,6 +156,9 @@
             "config/packages/nelmio_cors.yaml"
         ]
     },
+    "pagerfanta/pagerfanta": {
+        "version": "v3.4.0"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },

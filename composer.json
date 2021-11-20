@@ -15,6 +15,7 @@
         "doctrine/orm": "^2.9",
         "lexik/jwt-authentication-bundle": "^2.13",
         "nelmio/cors-bundle": "^2.1",
+        "pagerfanta/pagerfanta": "^3.4",
         "phpdocumentor/reflection-docblock": "^5.2",
         "symfony/amqp-messenger": "5.3.*",
         "symfony/asset": "5.3.*",

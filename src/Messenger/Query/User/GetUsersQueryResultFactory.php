@@ -4,28 +4,25 @@ declare(strict_types=1);
 
 namespace App\Messenger\Query\User;
 
-use App\Entity\User\User;
 use App\Enum\User\Channel;
 use App\Messenger\Contract\AbstractMessageFactory;
 use App\Messenger\Message;
 use App\Messenger\Query\QueryResult;
+use App\View\Pagination\PaginationView;
 use Symfony\Component\Messenger\Envelope;
 
 class GetUsersQueryResultFactory extends AbstractMessageFactory
 {
-    /**
-     * @param array<User> $users
-     */
     public function create(
         Message $message,
-        array $users
+        PaginationView $paginationView
     ): Envelope {
         $channel = Channel::GET_USERS_RESULT;
         $idStamp = $this->getIdStamp();
 
         $queryResult = new QueryResult(
             $channel,
-            $users,
+            $paginationView,
             $idStamp->getId(),
             $this->getOriginatedMessageId($message)
         );

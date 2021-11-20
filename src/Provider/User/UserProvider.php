@@ -60,12 +60,5 @@ class UserProvider
             ->userRepository
             ->findOneByEmail($email);
     }
-
-    public function getUsers(): array
-    {
-        return $this
-            ->userRepository
-            ->findAll();
-    }
 }
 

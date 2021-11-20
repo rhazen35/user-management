@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\User;
 
+use App\DataFixtures\Development\UserFixtureData;
 use App\Entity\User\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -21,7 +22,7 @@ class Factory
         return new User();
     }
 
-    public function createFromArray(array $data): User
+    public function createFromFixtureData(UserFixtureData $data): User
     {
         $user = $this->create();
 
@@ -29,14 +30,14 @@ class Factory
             ->passwordHasher
             ->hashPassword(
                 $user,
-                $data['password']
+                $data->getPassword()
             );
 
         return $user
-            ->setFirstName($data['firstName'])
-            ->setLastName($data['lastName'])
-            ->setUsername($data['username'])
-            ->setEmail($data['email'])
+            ->setFirstName($data->getFirstName())
+            ->setLastName($data->getLastName())
+            ->setUsername($data->getUserName())
+            ->setEmail($data->getEmail())
             ->setPassword($password)
             ->eraseCredentials();
     }

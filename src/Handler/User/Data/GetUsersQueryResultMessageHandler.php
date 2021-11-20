@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Handler\User\Data;
 
-use App\Entity\User\User;
 use App\Mercure\User\Data\GetUsersResultUpdateFactory;
 use App\Messenger\Dispatcher;
 use App\Messenger\Message;
 use App\Messenger\Query\User\GetUsersQueryResultFactory;
+use App\View\Pagination\PaginationView;
 
 class GetUsersQueryResultMessageHandler
 {
@@ -26,25 +26,22 @@ class GetUsersQueryResultMessageHandler
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * @param array<User> $users
-     */
     public function __invoke(
         Message $message,
-        array $users
+        PaginationView $paginationView
     ): void {
         $envelope = $this
             ->getUsersQueryResultFactory
             ->create(
                 $message,
-                $users
+                $paginationView
             );
 
         $update = $this
             ->getUsersResultUpdateFactory
             ->create(
                 $message,
-                $users
+                $paginationView
             );
 
         $this

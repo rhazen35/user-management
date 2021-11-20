@@ -16,3 +16,7 @@ reset-db-with-migrations:
 	docker-compose exec php-fpm bin/console do:da:cr
 
 	make migrations
+
+reset-db-and-load-fixtures-with-migrations:
+	make reset-db-with-migrations
+	docker-compose exec php-fpm bin/console do:fi:lo --append
