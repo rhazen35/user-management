@@ -20,6 +20,7 @@ framework:
                                 - update_user
                                 - delete_user
                                 - authenticate_user
+                                - token_expired
 
             publish:
                 dsn: "%env(MESSENGER_TRANSPORT_DSN)%"

@@ -34,4 +34,11 @@ class Dispatcher
             ->hub
             ->publish($update);
     }
+
+    public function dispatchUpdate(Update $update) : void
+    {
+        $this
+            ->hub
+            ->publish($update);
+    }
 }
