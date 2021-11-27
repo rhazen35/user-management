@@ -19,6 +19,7 @@ class GetUsersResultUpdateFactory extends AbstractUpdateFactory
         return new Update(
             $this->getTopic(Channel::GET_USERS_RESULT),
             json_encode([
+                'channel' => Channel::GET_USERS_RESULT,
                 'originatedMessageId' => $this->getOriginatedMessageId($message),
                 'users' => $paginationView
             ])

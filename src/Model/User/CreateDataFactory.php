@@ -11,6 +11,7 @@ class CreateDataFactory
         return new CreateData(
             $payload->firstName ?? null,
             $payload->lastName ?? null,
+            $payload->username ?? null,
             $payload->email ?? null,
             $payload->password ?? null,
         );

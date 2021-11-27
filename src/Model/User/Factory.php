@@ -56,7 +56,7 @@ class Factory
         return $user
             ->setFirstName($data->getFirstName())
             ->setLastName($data->getLastName())
-            ->setUsername($data->getEmail())
+            ->setUsername($data->getUsername())
             ->setEmail($data->getEmail())
             ->setPassword($password)
             ->eraseCredentials();

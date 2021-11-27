@@ -20,8 +20,9 @@ class InvalidCredentialsUpdateFactory extends AbstractUpdateFactory
         array $violations
     ): Update {
         return new Update(
-            $this->getTopic(Channel::USER_AUTHENTICATED),
+            $this->getTopic(Channel::INVALID_CREDENTIALS),
             json_encode([
+                'channel' => Channel::INVALID_CREDENTIALS,
                 'originatedMessageId' => $this->getOriginatedMessageId($message),
                 'errors' => $violations
             ])

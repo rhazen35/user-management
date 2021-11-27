@@ -23,6 +23,7 @@ class UserCreatedUpdateFactory extends AbstractUpdateFactory
         return new Update(
             $this->getTopic(Channel::USER_CREATED),
             json_encode([
+                'channel' => Channel::USER_CREATED,
                 'originatedMessageId' => $this->getOriginatedMessageId($message),
                 'id' => $userId
             ])

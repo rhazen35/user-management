@@ -18,6 +18,7 @@ class TokenExpiredUpdateFactory extends AbstractUpdateFactory
         return new Update(
             $this->getTopic(Channel::TOKEN_EXPIRED),
             json_encode([
+                'channel' => Channel::TOKEN_EXPIRED,
                 'originatedMessageId' => $this->getOriginatedMessageId($message),
                 'token' => $token
             ])

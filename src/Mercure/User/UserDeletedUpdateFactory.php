@@ -24,6 +24,7 @@ class UserDeletedUpdateFactory extends AbstractUpdateFactory
         return new Update(
             $this->getTopic(Channel::USER_DELETED),
             json_encode([
+                'channel' => Channel::USER_DELETED,
                 'originatedMessageId' => $this->getOriginatedMessageId($message),
                 Properties::ID => $userId
             ])

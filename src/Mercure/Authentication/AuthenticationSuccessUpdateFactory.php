@@ -24,6 +24,7 @@ class AuthenticationSuccessUpdateFactory extends AbstractUpdateFactory
         return new Update(
             $this->getTopic(Channel::USER_AUTHENTICATED),
             json_encode([
+                'channel' => Channel::USER_AUTHENTICATED,
                 'originatedMessageId' => $this->getOriginatedMessageId($message),
                 'id' => $userId,
                 'token' => $token
