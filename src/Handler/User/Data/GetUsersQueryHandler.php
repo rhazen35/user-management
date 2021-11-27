@@ -86,8 +86,13 @@ class GetUsersQueryHandler implements HandlerInterface
     {
         $formFata = [];
         $payload = $message->getPayload();
+        $search = $payload->search ?? null;
         $sortBy = $payload->sortBy ?? null;
         $sortOrder = $payload->sortOrder ?? null;
+
+        if (null !== $search) {
+            $formFata['search'] = $search;
+        }
 
         if (null !== $sortBy) {
             $formFata['sortBy'] = json_decode($sortBy);

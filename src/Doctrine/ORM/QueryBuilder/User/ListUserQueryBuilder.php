@@ -24,9 +24,40 @@ class ListUserQueryBuilder
             ->userRepository
             ->createQueryBuilder('user');
 
+        $this->applySearch($queryBuilder, $data);
         $this->applySort($queryBuilder, $data);
 
         return $queryBuilder;
+    }
+
+    private function applySearch(
+        QueryBuilder $queryBuilder,
+        ListSearchRequestData $data
+    ): void {
+        if (null === $data->search) {
+            return;
+        }
+
+        $queryBuilder
+            ->andWhere(
+                $queryBuilder
+                    ->expr()
+                    ->orX(
+                        $queryBuilder
+                            ->expr()
+                            ->like('user.firstName', ':search'),
+                        $queryBuilder
+                            ->expr()
+                            ->like('user.lastName', ':search'),
+                        $queryBuilder
+                            ->expr()
+                            ->like('user.username', ':search'),
+                        $queryBuilder
+                            ->expr()
+                            ->like('user.email', ':search')
+                    )
+            )
+            ->setParameter('search', '%'.$data->search.'%');
     }
 
     private function applySort(

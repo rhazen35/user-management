@@ -25,6 +25,11 @@ class ListSearchRequestData extends PaginatedSearchRequestData
     ];
 
     /**
+     * @Assert\Type("string")
+     */
+    public ?string $search = null;
+
+    /**
      * @Assert\Type("array")
      * @Assert\Choice(
      *     ListSearchRequestData::SORT_FIELDS,

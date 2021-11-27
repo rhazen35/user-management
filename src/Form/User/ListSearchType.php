@@ -9,6 +9,7 @@ use App\Form\Search\PaginatedSearchRequestType;
 use App\View\User\ListSearchRequestData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +20,7 @@ class ListSearchType extends AbstractType
         array $options
     ): void {
         $builder
+            ->add('search', TextType::class)
             ->add(
                 'sortBy',
                 ChoiceType::class,
