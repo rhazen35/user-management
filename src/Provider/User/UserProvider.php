@@ -52,9 +52,19 @@ class UserProvider
 
     /**
      * @throws NonUniqueResultException
+     */
+    public function getUserByEmailOrNull(string $email): ?User
+    {
+        return $this
+            ->userRepository
+            ->findOneOrNullByEmail($email);
+    }
+
+    /**
+     * @throws NonUniqueResultException
      * @throws EntityNotFoundException
      */
-    public function getUserByEmail(string $email): User
+    public function getUserByEmail(string $email): ?User
     {
         return $this
             ->userRepository

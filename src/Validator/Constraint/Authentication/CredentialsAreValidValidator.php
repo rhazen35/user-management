@@ -43,7 +43,15 @@ class CredentialsAreValidValidator extends ConstraintValidator
 
         $user = $this
             ->userProvider
-            ->getUserByEmail($value->getEmail());
+            ->getUserByEmailOrNull($value->getEmail());
+
+        if (null === $user) {
+            $this
+                ->context
+                ->addViolation($constraint->message);
+
+            return;
+        }
 
         $validPassword = $this
             ->userPasswordHasher

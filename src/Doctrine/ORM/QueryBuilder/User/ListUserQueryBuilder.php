@@ -27,6 +27,8 @@ class ListUserQueryBuilder
         $this->applySearch($queryBuilder, $data);
         $this->applySort($queryBuilder, $data);
 
+        $queryBuilder->andWhere('user.deletedAt IS NULL');
+
         return $queryBuilder;
     }
 
