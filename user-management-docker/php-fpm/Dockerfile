@@ -22,7 +22,7 @@ RUN apk add --no-cache \
         $PHPIZE_DEPS \
     ;
 
-RUN pecl install xdebug
+RUN pecl install xdebug-3.1.5
 
 RUN apk add --no-cache rabbitmq-c-dev && \
     mkdir -p /usr/src/php/ext/amqp && \

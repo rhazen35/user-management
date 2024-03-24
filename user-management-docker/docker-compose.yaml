@@ -45,9 +45,16 @@ services:
 
   mercure:
     image: dunglas/mercure
-    command: caddy run -config /etc/caddy/Caddyfile.dev
-    ports: [ '3000:80' ]
     environment:
+      DEBUG: "debug"
       SERVER_NAME: ':80'
+      # Change the following value if you know how it works.
+      # MERCURE_TRANSPORT_URL: "bolt://mercure.db"
       MERCURE_PUBLISHER_JWT_KEY: '!ChangeMe!'
       MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeMe!'
+      # In the cors_origin, add your domain(s). Or just use *
+      MERCURE_EXTRA_DIRECTIVES: |-
+        cors_origins *
+        anonymous
+    ports:
+      - "3000:80"

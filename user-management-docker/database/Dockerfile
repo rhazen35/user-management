@@ -1,3 +1,3 @@
-FROM mariadb:latest
+FROM mariadb:10.9.3
 CMD ["mysqld"]
 EXPOSE ${DATABASE_EXPOSED_PORT}
